@@ -1,7 +1,7 @@
-which-stock.ipynb
-stack-rnn-arima-xgb.ipynb
-tesla-study.ipynb
-outliers.ipynb
-kijang-emas-bank-negara.ipynb
-bitcoin-analysis-lstm.ipynb
+which-stock.ipynb -- MergeError: Passing 'suffixes' which cause duplicate columns {'Close_x'} is not allowed.
+stack-rnn-arima-xgb.ipynb -- ValueError: could not convert string to float: 'Highest:55.22'
+tesla-study.ipynb -- no file
+outliers.ipynb -- AttributeError: 'Series' object has no attribute 'set_value'
+kijang-emas-bank-negara.ipynb -- no file
+bitcoin-analysis-lstm.ipynb -- ValueError: could not convert string to float: '2018-07-11 20:00:00'
 evolution-strategy-bayesian-agent.ipynb

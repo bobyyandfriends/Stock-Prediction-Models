@@ -1,3 +1,7 @@
 which-stock.ipynb
 stack-rnn-arima-xgb.ipynb
 tesla-study.ipynb
+outliers.ipynb
+kijang-emas-bank-negara.ipynb
+bitcoin-analysis-lstm.ipynb
+evolution-strategy-bayesian-agent.ipynb

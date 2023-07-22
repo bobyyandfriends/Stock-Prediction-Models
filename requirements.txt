@@ -9,3 +9,5 @@ tqdm
 xgboost
 flask
 mpl_finance
+bayesian-optimization
+statsmodels

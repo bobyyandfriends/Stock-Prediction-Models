@@ -11,3 +11,5 @@ flask
 mpl_finance
 bayesian-optimization
 statsmodels
+scipy
+xlsxwriter

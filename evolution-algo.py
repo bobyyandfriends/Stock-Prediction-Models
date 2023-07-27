@@ -14,6 +14,10 @@ import types
 import schedule
 from datetime import datetime, timedelta
 
+from alpaca.trading.client import TradingClient
+from alpaca.trading.requests import MarketOrderRequest
+from alpaca.trading.enums import OrderSide, TimeInForce
+
 def trial(): 
     def get_imports():
         for name, val in globals().items():
@@ -191,10 +195,11 @@ def trial():
             states_sell = []
             states_buy = []
             inventory = []
+            days = 0
             for t in range(0, len(self.trend) - 1, self.skip):
                 action = self.act(state)
                 next_state = self.get_state(t + 1)
-                
+                days += 1
                 if action == 1 and initial_money >= self.trend[t]:
                     inventory.append(self.trend[t])
                     initial_money -= self.trend[t]
@@ -217,7 +222,7 @@ def trial():
 
             invest = ((initial_money - starting_money) / starting_money) * 100
             total_gains = initial_money - starting_money
-            return states_buy, states_sell, total_gains, invest
+            return states_buy, states_sell, total_gains, invest, state, days
 
     # %%
     close = df.Close.values.tolist()
@@ -234,7 +239,49 @@ def trial():
     agent.fit(iterations = 500, checkpoint = 10)
 
     # %%
-    states_buy, states_sell, total_gains, invest = agent.buy()
+    states_buy, states_sell, total_gains, invest, state, days = agent.buy()
+    print("States buy: {}".format(states_buy))
+    print("States sell: {}".format(states_sell))
+    print("State: {}".format(state))
+    print("Days: {}".format(days))
+    print("Cool")
+    API_KEY = "PK8JAI6R51F7SC86GT4L"
+    SECRET_KEY = "vIOxUHOwrVZve7kDfnEvijBrQg9cKcoPUedgAqJY"
+
+    trading_client = TradingClient(API_KEY, SECRET_KEY, paper=True)
+
+
+    # # Getting account information and printing it
+    # account = trading_client.get_account()
+    # for property_name, value in account:
+    #   print(f"\"{property_name}\": {value}")
+
+    # Setting parameters for our buy order
+    market_order_data_buy = MarketOrderRequest(
+                        symbol="GOOG",
+                        qty=1,
+                        side=OrderSide.BUY,
+                        time_in_force=TimeInForce.GTC
+                    )
+    market_order_data_sell = MarketOrderRequest(
+                        symbol="GOOG",
+                        qty=1,
+                        side=OrderSide.SELL,
+                        time_in_force=TimeInForce.GTC
+                    )
+
+    # Submitting the order and then printing the returned object
+    for buy in states_buy:
+        if buy > days - 2:
+            market_order = trading_client.submit_order(market_order_data_buy)
+            for property_name, value in market_order:
+                print(f"\"{property_name}\": {value}")
+    for sell in states_sell:
+        if sell > days - 2:
+            market_order = trading_client.submit_order(market_order_data_sell)
+            for property_name, value in market_order:
+                print(f"\"{property_name}\": {value}")
+    
 
     # %%
     fig = plt.figure(figsize = (15,5))
@@ -267,7 +314,7 @@ time_difference_end = (end_time - current_time).total_seconds()
 # Run the code every 15 minutes until 4 PM
 while current_time <= end_time:
     trial()
-    time.sleep(3600)  # 900 seconds = 15 minutes
+    time.sleep(900)  # 900 seconds = 15 minutes
     current_time = datetime.now()
 
 

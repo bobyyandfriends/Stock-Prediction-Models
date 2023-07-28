@@ -290,7 +290,7 @@ def trial():
     plt.plot(close, 'v', markersize=10, color='k', label = 'selling signal', markevery = states_sell)
     plt.title('total gains %f, total investment %f%%'%(total_gains, invest))
     plt.legend()
-    plt.show()
+    #plt.show()
 
     # %%
 # Schedule the execution to start at 9:30 AM

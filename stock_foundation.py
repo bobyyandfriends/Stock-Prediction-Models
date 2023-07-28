@@ -22,6 +22,8 @@ SECRET_KEY = "vIOxUHOwrVZve7kDfnEvijBrQg9cKcoPUedgAqJY"
 
 trading_client = TradingClient(API_KEY, SECRET_KEY, paper=True)
 
+states_buy, states_sell, total_gains, invest, days = step(df)
+print(states_buy)
 
 # # Getting account information and printing it
 # account = trading_client.get_account()
@@ -76,7 +78,7 @@ time_difference_end = (end_time - current_time).total_seconds()
 # Run the code every 15 minutes until 4 PM
 while current_time <= end_time:
     #trial()
-    time.sleep(900)  # 900 seconds = 15 minutes
+    time.sleep(3600)  # 900 seconds = 15 minutes
     current_time = datetime.now()
 
 

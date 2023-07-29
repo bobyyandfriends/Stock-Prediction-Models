@@ -45,7 +45,10 @@ def scrape_nasdaq_stock_data(symbol, start_date, end_date, data_interval, output
 
         while current_date <= end_date:
             if is_trading_day(current_date):
-                data = yf.download(symbol, start=current_date, end=current_date, interval=data_interval)
+                days_ago = datetime.now() - timedelta(days=45)
+                data = yf.download("GOOG", start=days_ago, end=datetime.now(), interval='1h')
+                #data = yf.download("GOOG", start=current_date, end=current_date, interval='1h')
+                print(data)
                 if not data.empty:
                     date = current_date.strftime("%Y-%m-%d")
                     open_price = data["Open"].values[0]

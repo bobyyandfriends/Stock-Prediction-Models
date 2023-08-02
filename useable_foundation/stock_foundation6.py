@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
+import alpaca_trade_api as tradeapi
 import yfinance as yf
 import numpy as np
 import pandas as pd
@@ -52,14 +53,19 @@ while current_time <= end_time:
                         time_in_force=TimeInForce.GTC
                     )
 
+    #Get's the positions
+    api = tradeapi.REST()
+    goog_position = api.get_position('GOOG')
+
+
     # Submitting the order and then printing the returned object
     for buy in states_buy:
-        if buy > days - 2:
+        if buy > days - 1:
             market_order = trading_client.submit_order(market_order_data_buy)
             for property_name, value in market_order:
                 print(f"\"{property_name}\": {value}")
     for sell in states_sell:
-        if sell > days - 2:
+        if sell > days - 1:
             market_order = trading_client.submit_order(market_order_data_sell)
             for property_name, value in market_order:
                 print(f"\"{property_name}\": {value}")

@@ -19,7 +19,7 @@ APCA_API_BASE_URL = "https://paper-api.alpaca.markets"
 api = tradeapi.REST(API_KEY, SECRET_KEY, APCA_API_BASE_URL)
 
 # Get our position in AAPL.
-#aapl_position = api.get_position('AAPL')
+#aapl_position = api.get_position('GOOG')
 
 # Get a list of all of our positions.
 portfolio = api.list_positions()

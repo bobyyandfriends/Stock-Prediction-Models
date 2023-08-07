@@ -26,8 +26,8 @@ while current_time <= end_time:
     days_ago = datetime.now() - timedelta(days=45)
     df = yf.download("GOOG", start=days_ago, end=datetime.now(), interval='1h')
 
-    API_KEY = "PK8JAI6R51F7SC86GT4L"
-    SECRET_KEY = "vIOxUHOwrVZve7kDfnEvijBrQg9cKcoPUedgAqJY"
+    API_KEY = "PKYUGM3AH5XOMZ282TUB"
+    SECRET_KEY = "JpEIwepalG7aOQ6E1H4s4WB0tgEUJQWMQTxtIMZo"
 
     trading_client = TradingClient(API_KEY, SECRET_KEY, paper=True)
 
@@ -54,9 +54,21 @@ while current_time <= end_time:
                     )
 
     #Get's the positions
-    api = tradeapi.REST()
-    goog_position = api.get_position('GOOG')
+    APCA_API_BASE_URL = "https://paper-api.alpaca.markets"
+    api = tradeapi.REST(API_KEY, SECRET_KEY, APCA_API_BASE_URL)
 
+    # Get our position in AAPL.
+    #aapl_position = api.get_position('GOOG')
+
+    # Get a list of all of our positions.
+    portfolio = api.list_positions()
+
+    amount = 0
+
+    # Print the quantity of shares for each position.
+    for position in portfolio:
+        if position.symbol == "GOOG":
+            amount = position.qty
 
     # Submitting the order and then printing the returned object
     for buy in states_buy:
@@ -65,13 +77,13 @@ while current_time <= end_time:
             for property_name, value in market_order:
                 print(f"\"{property_name}\": {value}")
     for sell in states_sell:
-        if sell > days - 1:
+        if sell > days - 1 and amount > 0:
             market_order = trading_client.submit_order(market_order_data_sell)
             for property_name, value in market_order:
                 print(f"\"{property_name}\": {value}")
 
     # Run the code every 15 minutes until 4 PM
-    time.sleep(1)  # 900 seconds = 15 minutes
+    time.sleep(3600)  # 900 seconds = 15 minutes
     current_time = datetime.now()
 
 
